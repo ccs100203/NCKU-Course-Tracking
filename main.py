@@ -44,7 +44,6 @@ def find_remain_only(driver):
             break
     
     if isRemain: 
-        print('mode ', mode)
         if mode == 1:
             message = dept+'-'+course +' 有餘額'
             lineNotifyMessage(message)
