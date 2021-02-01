@@ -20,7 +20,10 @@ The setup description of Chromedriver and LINE Notify hasn't finished yet.
 ```
 pip install -r requirements.txt
 ```
-
+- Run
+```
+python main.py
+```
 ## Disclaimers
 I can not promise if it is banned by the school.
 Also, I don't maintain it unless someone reminds me or I recall.
