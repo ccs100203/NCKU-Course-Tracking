@@ -112,15 +112,9 @@ def main():
     driver.set_window_size(1400, 800)
     time.sleep(0.5)
 
-    if mode == 1:
-        # track course remain
-        while True:
-            find_remain_only(driver)
-            time.sleep(5)
-    else:
-        # track course remain && auto choose
-        while True:
-            find_remain_only(driver)
-            time.sleep(5)
+    # track course remain
+    while True:
+        find_remain_only(driver)
+        time.sleep(5)
     
 main()
