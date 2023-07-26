@@ -1,3 +1,5 @@
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
 import requests
 from selenium import webdriver
 import time
@@ -29,16 +31,16 @@ def find_remain_only(driver):
     # goto course main page
     driver.get('https://course.ncku.edu.tw/index.php?c=qry_all')
     time.sleep(0.5)
-    driver.find_element_by_css_selector(f'li[data-dept="{dept}"]').click()
+    driver.find_element(By.CSS_SELECTOR, f'li[data-dept="{dept}"]').click()
     
     time.sleep(2)
     
     isRemain = False
     # already into subject page
     for i in range(1, 10000):
-        text = driver.find_element_by_css_selector(f'#A9-table > tbody > tr:nth-child({i}) > td:nth-child(2) > div').text
+        text = driver.find_element(By.CSS_SELECTOR, f'#A9-table > tbody > tr:nth-child({i}) > td:nth-child(2) > div').text
         if(text == dept+'-'+course):
-            ele = driver.find_element_by_xpath(f'//*[@id="A9-table"]/tbody/tr[{i}]/td[8]').text
+            ele = driver.find_element(By.XPATH, f'//*[@id="A9-table"]/tbody/tr[{i}]/td[8]').text
             if(ele.find('額滿') < 0):
                 isRemain = True
             break
@@ -64,12 +66,12 @@ def choose(driver):
     time.sleep(2)
     s = dept+course
     try:
-        driver.find_element_by_css_selector(f'#main-table > tbody > tr.course_tr.course_{s}.td_bg1 > td:nth-child(10) > button').click()
+        driver.find_element(By.CSS_SELECTORf, '#main-table > tbody > tr.course_tr.course_{s}.td_bg1 > td:nth-child(10) > button').click()
     except:
         pass
     time.sleep(0.5)
     try:
-        driver.find_element_by_css_selector(f'#main-table > tbody > tr.course_tr.course_{s}.td_bg2 > td:nth-child(10) > button').click()
+        driver.find_element(By.CSS_SELECTOR, f'#main-table > tbody > tr.course_tr.course_{s}.td_bg2 > td:nth-child(10) > button').click()
     except:
         pass
 
@@ -78,18 +80,18 @@ def login(driver):
     global account, password
     driver.set_window_size(1400, 800)
     driver.get('https://course.ncku.edu.tw/index.php?c=auth')
-    driver.find_element_by_xpath('//*[@id="loginbg"]/div/div/div[2]/a').click()
+    driver.find_element(By.XPATH, '//*[@id="loginbg"]/div/div/div[2]/a').click()
 
     time.sleep(2)
     # input username && passsword
-    driver.find_element_by_xpath('//*[@id="userNameInput"]').send_keys(account)
-    driver.find_element_by_xpath('//*[@id="passwordInput"]').send_keys(password)
-    driver.find_element_by_xpath('//*[@id="submitButton"]').click()
+    driver.find_element(By.XPATH, '//*[@id="userNameInput"]').send_keys(account)
+    driver.find_element(By.XPATH, '//*[@id="passwordInput"]').send_keys(password)
+    driver.find_element(By.XPATH, '//*[@id="submitButton"]').click()
     time.sleep(2)
 
     # force login
     try:
-        driver.find_element_by_xpath('//*[@id="error"]/div/form/span/div/div[2]/p/a').click()
+        driver.find_element(By.XPATH, '//*[@id="error"]/div/form/span/div/div[2]/p/a').click()
     except:
         pass
     time.sleep(2)
@@ -107,8 +109,10 @@ def main():
         account = input('account: ')
         password = getpass.getpass('password: ')
 
-    # create a chrome driver
-    driver = webdriver.Chrome()
+    # create a chrome driver ##
+    driverpath = ChromeDriverManager().install()
+    service = webdriver.chrome.service.Service(executable_path=driverpath)
+    driver = webdriver.Chrome(service=service)
     driver.set_window_size(1400, 800)
     time.sleep(0.5)
 
